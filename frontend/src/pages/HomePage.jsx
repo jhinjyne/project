@@ -5,7 +5,7 @@ export default function ApplicantsPage() {
   const [selectedIds, setSelectedIds] = useState([]);
 
   useEffect(() => {
-    fetch("/api/applicants")
+    fetch("http://localhost:8000/api/applicants")
       .then((res) => res.json())
       .then((data) => setApplicants(data));
   }, []);

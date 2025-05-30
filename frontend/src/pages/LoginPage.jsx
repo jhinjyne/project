@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,9 +14,10 @@ const LoginPage = () => {
     try {
       const response = await axios.post('http://localhost:8000/api/login', {
         email,
-        password
+        password,
       });
       localStorage.setItem('token', response.data.token);
+      navigate('/');
     } catch (err) {
       setError('Invalid credentials');
     }
