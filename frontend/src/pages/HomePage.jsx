@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function ApplicantsPage() {
   const [applicants, setApplicants] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:8000/api/applicants")
@@ -25,15 +27,34 @@ export default function ApplicantsPage() {
   };
 
   const handleAdd = () => {
+    navigate('/add-applicant');
   };
 
   const handleEdit = () => {
     if (selectedIds.length === 1) {
+      navigate(`/edit-applicant/${selectedIds[0]}`);
     }
   };
 
-  const handleBulkDelete = () => {
+  const handleBulkDelete = async () => {
     if (selectedIds.length === 0) return;
+
+    try {
+      await Promise.all(
+        selectedIds.map(id =>
+          fetch(`http://localhost:8000/api/applicants/${id}`, {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          })
+        )
+      );
+      setApplicants(applicants.filter(app => !selectedIds.includes(app.id)));
+      setSelectedIds([]);
+    } catch {
+      alert('Failed to delete some applicants.');
+    }
   };
 
   return (
@@ -65,20 +86,37 @@ export default function ApplicantsPage() {
           </tr>
         </thead>
         <tbody>
-          {applicants.map(({ id, name, phone, email, address }) => (
-            <tr key={id}>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={selectedIds.includes(id)}
-                  onChange={() => toggleSelect(id)}
-                />
-              </td>
-              <td>{name}</td>
-              <td>{phone}</td>
-              <td>{email}</td>
-              <td>{address}</td>
-            </tr>
+          {applicants.map(({ id, name, phone, email, address, comments = [] }) => (
+            <React.Fragment key={id}>
+              <tr>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.includes(id)}
+                    onChange={() => toggleSelect(id)}
+                  />
+                </td>
+                <td>{name}</td>
+                <td>{phone}</td>
+                <td>{email}</td>
+                <td>{address}</td>
+              </tr>
+              {comments.length > 0 && (
+                <tr>
+                  <td></td>
+                  <td colSpan="4">
+                    <strong>Comments:</strong>
+                    <ul>
+                      {comments.map((c, idx) => (
+                        <li key={idx}>
+                          {c.text} {c.category?.name && `(Category: ${c.category.name})`}
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
+                </tr>
+              )}
+            </React.Fragment>
           ))}
           {applicants.length === 0 && (
             <tr>
