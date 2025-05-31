@@ -1,0 +1,37 @@
+.message-success {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #c3e6cb;
+  border-radius: 10px;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #4ee9f5, #f9f9f9);
+  min-height: 100vh;
+  padding: 10px;
+}
+
+.comments-list {
+  padding-left: 15px;
+  margin: 0;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+.table {
+  /* width: 100%;
+  word-wrap: break-word; */
+  border-radius: 10px;
+  overflow: hidden;
+}
+body, html {
+  overflow-x: hidden;
+}

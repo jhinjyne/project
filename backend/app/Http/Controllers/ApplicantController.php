@@ -83,5 +83,59 @@ class ApplicantController extends Controller
         return response()->json(['message' => 'Applicants deleted']);
     }
 
+    public function updateComment(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'comment' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $comment = ApplicantComment::findOrFail($id);
+        $comment->update($validated);
+
+        return response()->json(['message' => 'Comment updated successfully', 'comment' => $comment]);
+    }
+
+    public function addComment(Request $request)
+    {
+        $validated = $request->validate([
+            'applicant_id' => 'required|exists:applicants,id',
+            'comment' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $comment = ApplicantComment::create($validated);
+
+        return response()->json(['message' => 'Comment created successfully', 'comment' => $comment]);
+    }
+
+    public function destroyComment($id)
+    {
+        $comment = ApplicantComment::find($id);
+        if (!$comment) {
+            return response()->json(['message' => 'Comment not found'], 404);
+        }
+
+        $comment->delete();
+
+        return response()->json(['message' => 'Comment deleted successfully']);
+    }
+    
+    public function storeComment(Request $request)
+    {
+        $data = $request->validate([
+            'applicant_id' => 'required|integer|exists:applicants,id',
+            'comment' => 'required|string',
+            'category_id' => 'required|integer|exists:categories,id',
+        ]);
+
+        $comment = ApplicantComment::create($data);
+
+        return response()->json($comment, 201);
+    }
+
+
+
+
 
 }

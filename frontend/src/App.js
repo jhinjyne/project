@@ -3,6 +3,7 @@ import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import AddApplicantForm from './pages/AddApplicantForm';
 import EditApplicant from "./pages/EditApplicant";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (

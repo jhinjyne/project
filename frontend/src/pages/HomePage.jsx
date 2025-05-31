@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import '../styles/ApplicantsPage.css';
 
 export default function ApplicantsPage() {
   const [applicants, setApplicants] = useState([]);
@@ -63,37 +64,47 @@ export default function ApplicantsPage() {
   };
 
   return (
-    <div>
+    <div className="table-responsive">
     {message && (
-      <div style={{ backgroundColor: '#d4edda', color: '#155724', padding: '10px', marginBottom: '10px', border: '1px solid #c3e6cb' }}>
+      <div className="message-success">
         {message}
       </div>
     )}
-      <h1>Applicants</h1>
-      <div style={{ marginBottom: 10 }}>
-        <button onClick={handleAdd}>Add Applicant</button>
-        <button onClick={handleEdit} disabled={selectedIds.length !== 1}>
-          Edit Applicant
-        </button>
-        <button onClick={handleBulkDelete} disabled={selectedIds.length === 0}>
-          Delete Selected
-        </button>
-      </div>
-      <table border="1" cellPadding="5" cellSpacing="0" width="100%">
-        <thead>
+      <h1 className="text-center my-4">APPLICANTS</h1>
+      <div className="d-flex justify-content-center gap-3 mb-4">
+  <button className="btn btn-primary" onClick={handleAdd}>
+    Add Applicant
+  </button>
+  <button
+    className="btn btn-warning"
+    onClick={handleEdit}
+    disabled={selectedIds.length !== 1}
+  >
+    Edit Applicant
+  </button>
+  <button
+    className="btn btn-danger"
+    onClick={handleBulkDelete}
+    disabled={selectedIds.length === 0}
+  >
+    Delete Selected
+  </button>
+</div>
+      <table className="table table-striped table-bordered rounded">
+        <thead class="table-dark">
           <tr>
-            <th>
+            <th scope="col">
               <input
                 type="checkbox"
                 checked={selectedIds.length === applicants.length && applicants.length > 0}
                 onChange={selectAll}
               />
             </th>
-            <th>Name</th>
-            <th>Phone Number</th>
-            <th>Email</th>
-            <th>Address</th>
-            <th>Comments</th> {}
+            <th scope="col">Name</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Email</th>
+            <th scope="col">Address</th>
+            <th scope="col">Comments</th> {}
           </tr>
         </thead>
         <tbody>
@@ -113,7 +124,7 @@ export default function ApplicantsPage() {
                 <td>{address}</td>
                 <td>
                   {applicant_comments.length > 0 ? (
-                    <ul style={{ paddingLeft: '15px', margin: 0 }}>
+                    <ul className="comments-list">
                       {applicant_comments.map((c, idx) => (
                         <li key={idx}>
                           {c.comment}

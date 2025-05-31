@@ -16,4 +16,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/applicants/get/{id}', [ApplicantController::class, 'update']);
     Route::delete('/applicants/{id}', [ApplicantController::class, 'destroy']);
     Route::post('/applicants/delete-multiple', [ApplicantController::class, 'destroyMultiple']);
+    Route::put('/comments/{id}', [ApplicantController::class, 'updateComment']);
+    Route::post('/addComments', [ApplicantController::class, 'addComment']);
+    Route::delete('/comments/{id}', [ApplicantController::class, 'destroyComment']);
+    Route::post('/comments', [ApplicantController::class, 'storeComment']);
+
 });
