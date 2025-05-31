@@ -5,6 +5,8 @@ export default function ApplicantsPage() {
   const [applicants, setApplicants] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const navigate = useNavigate();
+  const [message, setMessage] = useState('');
+
 
   useEffect(() => {
     fetch("http://localhost:8000/api/applicants")
@@ -52,6 +54,9 @@ export default function ApplicantsPage() {
       );
       setApplicants(applicants.filter(app => !selectedIds.includes(app.id)));
       setSelectedIds([]);
+      setMessage('Selected applicants deleted successfully.');
+      setTimeout(() => setMessage(''), 3000); 
+
     } catch {
       alert('Failed to delete some applicants.');
     }
@@ -59,6 +64,11 @@ export default function ApplicantsPage() {
 
   return (
     <div>
+    {message && (
+      <div style={{ backgroundColor: '#d4edda', color: '#155724', padding: '10px', marginBottom: '10px', border: '1px solid #c3e6cb' }}>
+        {message}
+      </div>
+    )}
       <h1>Applicants</h1>
       <div style={{ marginBottom: 10 }}>
         <button onClick={handleAdd}>Add Applicant</button>
@@ -83,12 +93,13 @@ export default function ApplicantsPage() {
             <th>Phone Number</th>
             <th>Email</th>
             <th>Address</th>
+            <th>Comments</th> {}
           </tr>
         </thead>
         <tbody>
-          {applicants.map(({ id, name, phone, email, address, comments = [] }) => (
+          {applicants.map(({ id, name, phone, email, address, applicant_comments = [] }) => (
             <React.Fragment key={id}>
-              <tr>
+              <tr key={id}>
                 <td>
                   <input
                     type="checkbox"
@@ -100,22 +111,20 @@ export default function ApplicantsPage() {
                 <td>{phone}</td>
                 <td>{email}</td>
                 <td>{address}</td>
-              </tr>
-              {comments.length > 0 && (
-                <tr>
-                  <td></td>
-                  <td colSpan="4">
-                    <strong>Comments:</strong>
-                    <ul>
-                      {comments.map((c, idx) => (
+                <td>
+                  {applicant_comments.length > 0 ? (
+                    <ul style={{ paddingLeft: '15px', margin: 0 }}>
+                      {applicant_comments.map((c, idx) => (
                         <li key={idx}>
-                          {c.text} {c.category?.name && `(Category: ${c.category.name})`}
+                          {c.comment}
                         </li>
                       ))}
                     </ul>
-                  </td>
-                </tr>
-              )}
+                  ) : (
+                    <em>No comments</em>
+                  )}
+                </td>
+              </tr>
             </React.Fragment>
           ))}
           {applicants.length === 0 && (
