@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\ApplicantComment;
 
 class Applicant extends Model
 {
@@ -15,4 +16,9 @@ class Applicant extends Model
         'email',
         'address',
     ];
+
+    public function applicant_comments()
+    {
+        return $this->hasMany(ApplicantComment::class);
+    }
 }
