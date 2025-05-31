@@ -154,36 +154,76 @@ export default function EditApplicant() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+  <div className="d-flex justify-content-center mt-5">
+    <form
+      onSubmit={handleSubmit}
+      className="card p-4 bg-light shadow"
+      style={{ width: "500px" }}
+    >
       <h2>Edit Applicant</h2>
-      <label>
-        Name:
-        <input name="name" value={formData.name} onChange={handleChange} required />
-      </label>
+      <div className="mb-3">
+        <label className="form-label">Name</label>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          className="form-control"
+          required
+        />
+      </div>
+
       <br />
-      <label>
-        Phone:
-        <input name="phone" value={formData.phone} onChange={handleChange} required />
-      </label>
+      <div className="mb-3">
+        <label className="form-label">Phone:</label>
+        <input
+          type="text"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          className="form-control"
+          required
+        />
+      </div>
       <br />
-      <label>
-        Email:
-        <input name="email" type="email" value={formData.email} onChange={handleChange} required />
-      </label>
+      <div className="mb-3">
+        <label className="form-label">Email:</label>
+        <input
+          name="email"
+          type="email"
+          value={formData.email}
+          onChange={handleChange}
+          className="form-control"
+          required
+        />
+      </div>
       <br />
-      <label>
-        Address:
-        <input name="address" value={formData.address} onChange={handleChange} />
-      </label>
+      <div className="mb-3">
+        <label className="form-label">Address:</label>
+        <input
+          name="address"
+          value={formData.address}
+          onChange={handleChange}
+          className="form-control"
+        />
+      </div>
       <br />
+      
       <h3>Comments</h3>
       {comments.map((c, i) => (
-        <div key={i}>
+        <div key={i} className="mb-3 border rounded p-3">
+        <div className="mb-2">
+          <label className="form-label">Comment</label>
           <textarea
+            className="form-control"
             value={c.comment}
             onChange={(e) => handleCommentChange(i, "comment", e.target.value)}
           />
+        </div>
+        <div className="mb-2">
+          <label className="form-label">Category</label>
           <select
+            className="form-select"
             value={c.category_id}
             onChange={(e) => handleCommentChange(i, "category_id", e.target.value)}
           >
@@ -193,12 +233,22 @@ export default function EditApplicant() {
               </option>
             ))}
           </select>
-          <button type="button" onClick={() => deleteComment(i)}>Delete</button>
         </div>
+        <button type="button" onClick={() => deleteComment(i)} className="btn btn-danger btn-sm">
+          Delete
+        </button>
+      </div>
+
       ))}
-      <button type="button" onClick={addComment}>Add Comment</button>
+      <button type="button" onClick={addComment} className="btn btn-secondary mb-3">
+        Add Comment
+      </button>
       <br />
-      <button type="submit">Save Changes</button>
+      <button type="submit" className="btn btn-primary">
+        Save Changes
+      </button>
     </form>
+  </div>
+
   );
 }
